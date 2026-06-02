@@ -20,29 +20,55 @@ class DoublyLinkedListIterator {
   using const_pointer = const value_type*;
   using difference_type = ptrdiff_t;
 
-
+  explicit DoublyLinkedListIterator(DoublyLinkedNode<T>* node = nullptr) : curNode(node) {}
 
   //are the two iterators equal?
-  bool operator==(const DoublyLinkedListIterator<T>& rhs) const;
+  bool operator==(const DoublyLinkedListIterator<T>& rhs) const {
+   return curNode == rhs.curNode;
+  }
   //are the two iterators different?
-  bool operator!=(const DoublyLinkedListIterator<T>& rhs) const;
+  bool operator!=(const DoublyLinkedListIterator<T>& rhs) const {
+   return !(*this == rhs);
+  }
   //is the iterator safe to dereference?
-  explicit operator bool() const;
+  explicit operator bool() const { return curNode != nullptr; }
+
 
   //go to the next element
-  DoublyLinkedListIterator<T>& operator++(); //pre
-  const DoublyLinkedListIterator<T> operator++(int);//post
+  DoublyLinkedListIterator<T>& operator++() { //pre
+   curNode = curNode->next;
+   return *this;
+  }
+  const DoublyLinkedListIterator<T> operator++(int) { //post
+   auto tmp = *this;
+   ++(*this);
+   return tmp;
+  }
 
   //go to the previous element
-  DoublyLinkedListIterator<T>& operator--(); //pre
-  const DoublyLinkedListIterator<T> operator--(int); //post
+  DoublyLinkedListIterator<T>& operator--() { //pre
+   curNode = curNode->prev;
+   return *this;
+  }
+  const DoublyLinkedListIterator<T> operator--(int) { //post
+   auto tmp = *this;
+   --(*this);
+   return tmp;
+  }
 
   //get a reference to the value
-  [[nodiscard]] const_reference operator*() const;
-  [[nodiscard]] reference operator*();
-
-  DoublyLinkedNode<T>*& getCurNode();
-  const DoublyLinkedNode<T>*& getCurNode() const;
+  [[nodiscard]] const_reference operator*() const {
+   if (!curNode) throw DoublyLinkedListOutOfBoundsError();
+   return curNode->value;
+  }
+  [[nodiscard]] reference operator*() {
+   if (!curNode) throw DoublyLinkedListOutOfBoundsError();
+   return curNode->value;
+  }
+  DoublyLinkedNode<T>*& getCurNode() { return curNode; }
+  const DoublyLinkedNode<T>*& getCurNode() const {
+   return reinterpret_cast<const DoublyLinkedNode<T>*&>(curNode);
+  }
 
  private:
   DoublyLinkedNode<T>* curNode;

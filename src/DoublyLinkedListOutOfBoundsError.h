@@ -6,7 +6,8 @@
 #define TESTDOUBLELINKEDLIST_DOUBLYLINKEDLISTOUTOFBOUNDSERROR_H
 #include "DoublyLinkedListError.h"
 class DoublyLinkedListOutOfBoundsError : public DoublyLinkedListError {
-
+    public:
+        DoublyLinkedListOutOfBoundsError() : DoublyLinkedListError("out of bounds") {}
 };
 
 #endif //TESTDOUBLELINKEDLIST_DOUBLYLINKEDLISTOUTOFBOUNDSERROR_H

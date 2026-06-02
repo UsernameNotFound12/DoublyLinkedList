@@ -7,7 +7,8 @@
 #include "DoublyLinkedListError.h"
 
 class DoublyLinkedListEmptyError : public DoublyLinkedListError {
-
+    public:
+        DoublyLinkedListEmptyError() : DoublyLinkedListError("operation cannot be performed on an empty list") {}
 };
 
 
